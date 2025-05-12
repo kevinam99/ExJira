@@ -66,6 +66,9 @@ defmodule ExJiraWeb.TaskLive.FormComponent do
   end
 
   defp save_task(socket, :new, task_params) do
+    dbg(socket)
+    task_params =
+      Map.put(task_params, "organisation_id", socket.assigns.task.organisation_id)
     case Tasks.create_task(task_params) do
       {:ok, task} ->
         notify_parent({:saved, task})

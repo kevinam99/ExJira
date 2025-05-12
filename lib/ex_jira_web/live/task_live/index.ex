@@ -46,7 +46,7 @@ defmodule ExJiraWeb.TaskLive.Index do
       true ->
         socket
         |> assign(:page_title, "New Task")
-        |> assign(:task, %Task{})
+        |> assign(:task, %Task{organisation_id: user.organisation_id})
     end
   end
 
