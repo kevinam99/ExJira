@@ -73,8 +73,7 @@ defmodule ExJiraWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
-      live "/tasks", TaskLive.Index, :index,
-        private: %{authorize: {:read, ExJiraWeb.Plugs.Authorize}}
+      live "/tasks", TaskLive.Index, :index
 
       live "/tasks/new", TaskLive.Index, :new
       live "/tasks/:id/edit", TaskLive.Index, :edit
