@@ -13,6 +13,10 @@ defmodule ExJiraWeb.Router do
     plug :fetch_current_user
   end
 
+  pipeline :set_organisation do
+    plug ExJiraWeb.Plugs.SetCurrentOrganisation
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -68,7 +72,10 @@ defmodule ExJiraWeb.Router do
       on_mount: [{ExJiraWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
-      live "/tasks", TaskLive.Index, :index
+
+      live "/tasks", TaskLive.Index, :index,
+        private: %{authorize: {:read, ExJiraWeb.Plugs.Authorize}}
+
       live "/tasks/new", TaskLive.Index, :new
       live "/tasks/:id/edit", TaskLive.Index, :edit
 

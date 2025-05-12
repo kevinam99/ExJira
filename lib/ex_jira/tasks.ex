@@ -21,6 +21,13 @@ defmodule ExJira.Tasks do
     Repo.all(Task)
   end
 
+  def list_tasks_for_organisation(org_id) do
+    from(t in Task,
+      where: t.organisation_id == ^org_id
+    )
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single task.
 

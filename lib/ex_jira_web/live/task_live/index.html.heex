@@ -23,7 +23,7 @@
   </:action>
   <:action :let={{id, task}}>
     <.link
-      phx-click={JS.push("delete", value: %{id: task.id}) |> hide("##{id}")}
+      phx-click={JS.push("delete", value: %{id: task.id})}
       data-confirm="Are you sure?"
     >
       Delete
