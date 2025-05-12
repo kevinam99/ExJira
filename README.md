@@ -1,18 +1,60 @@
-# ExJira
+# ExJira 🛠️
 
-To start your Phoenix server:
+**ExJira** is a multitenant task management application built with [Elixir](https://elixir-lang.org/) and [Phoenix LiveView](https://hexdocs.pm/phoenix_live_view). Each user belongs to an organization, and permissions are controlled via role-based access control (RBAC). Inspired by Jira, designed for simplicity.
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+---
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+## ✨ Features
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+- 🔐 **Multitenant Authentication** using `phx.gen.auth`
+- 🏢 **Organizations**: Users belong to a single organization
+- 👥 **Role-Based Access Control**:
+  - `admin`: full access
+  - `manager`: can read, create, update
+  - `employee`: read-only
+- 📋 **Tasks**: Only visible and editable within the user’s organization
+- ⚡ **LiveView UI** for seamless UX
 
-## Learn more
+---
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Elixir ~> 1.15
+- Phoenix ~> 1.7
+- PostgreSQL
+
+### Setup
+
+```bash
+git clone https://github.com/kevinam99/ex_jira.git
+cd ex_jira
+
+# Install dependencies
+mix deps.get
+
+# Set up the database
+mix ecto.setup
+```
+
+# Seeding the Database
+
+Seeds include:
+- 2 organizations: Acme Corp and Globex Inc
+- Users for each org with admin, manager, and employee roles
+- Example tasks scoped per organization
+
+
+To seed, run:
+```bash
+mix run priv/repo/seeds.exs
+```
+
+# Running the App
+
+```bash
+mix phx.server
+```
+
+Visit http://localhost:4000
