@@ -23,7 +23,9 @@ defmodule ExJira.OrganisationsTest do
     test "create_organisation/1 with valid data creates a organisation" do
       valid_attrs = %{name: "some name"}
 
-      assert {:ok, %Organisation{} = organisation} = Organisations.create_organisation(valid_attrs)
+      assert {:ok, %Organisation{} = organisation} =
+               Organisations.create_organisation(valid_attrs)
+
       assert organisation.name == "some name"
     end
 
@@ -35,13 +37,18 @@ defmodule ExJira.OrganisationsTest do
       organisation = organisation_fixture()
       update_attrs = %{name: "some updated name"}
 
-      assert {:ok, %Organisation{} = organisation} = Organisations.update_organisation(organisation, update_attrs)
+      assert {:ok, %Organisation{} = organisation} =
+               Organisations.update_organisation(organisation, update_attrs)
+
       assert organisation.name == "some updated name"
     end
 
     test "update_organisation/2 with invalid data returns error changeset" do
       organisation = organisation_fixture()
-      assert {:error, %Ecto.Changeset{}} = Organisations.update_organisation(organisation, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Organisations.update_organisation(organisation, @invalid_attrs)
+
       assert organisation == Organisations.get_organisation!(organisation.id)
     end
 
