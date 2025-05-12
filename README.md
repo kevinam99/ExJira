@@ -21,7 +21,8 @@
 
 ### Prerequisites
 
-- Elixir ~> 1.15
+- Elixir ~> 1.18.3-otp-27
+- Erlang ~> 27.3.3
 - Phoenix ~> 1.7
 - PostgreSQL
 
