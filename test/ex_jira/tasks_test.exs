@@ -21,7 +21,14 @@ defmodule ExJira.TasksTest do
     end
 
     test "create_task/1 with valid data creates a task" do
-      valid_attrs = %{status: "some status", description: "some description", title: "some title"}
+      organisation = ExJira.OrganisationsFixtures.organisation_fixture()
+
+      valid_attrs = %{
+        status: "some status",
+        description: "some description",
+        title: "some title",
+        organisation_id: organisation.id
+      }
 
       assert {:ok, %Task{} = task} = Tasks.create_task(valid_attrs)
       assert task.status == "some status"

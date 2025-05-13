@@ -18,7 +18,7 @@ defmodule ExJiraWeb.UserLoginLiveTest do
         conn
         |> log_in_user(user_fixture())
         |> live(~p"/users/log_in")
-        |> follow_redirect(conn, "/")
+        |> follow_redirect(conn, "/tasks")
 
       assert {:ok, _conn} = result
     end
@@ -26,7 +26,7 @@ defmodule ExJiraWeb.UserLoginLiveTest do
 
   describe "user login" do
     test "redirects if user login with valid credentials", %{conn: conn} do
-      password = "123456789abcd"
+      password = "123456789abc"
       user = user_fixture(%{password: password})
 
       {:ok, lv, _html} = live(conn, ~p"/users/log_in")
@@ -36,7 +36,7 @@ defmodule ExJiraWeb.UserLoginLiveTest do
 
       conn = submit_form(form, conn)
 
-      assert redirected_to(conn) == ~p"/"
+      assert redirected_to(conn) == ~p"/tasks"
     end
 
     test "redirects to login page with a flash error if there are no valid credentials", %{

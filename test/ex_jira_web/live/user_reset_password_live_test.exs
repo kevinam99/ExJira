@@ -39,11 +39,9 @@ defmodule ExJiraWeb.UserResetPasswordLiveTest do
       result =
         lv
         |> element("#reset_password_form")
-        |> render_change(
-          user: %{"password" => "secret12", "password_confirmation" => "secret123456"}
-        )
+        |> render_change(user: %{"password" => "see", "password_confirmation" => "secret123456"})
 
-      assert result =~ "should be at least 12 character"
+      assert result =~ "should be at least 5 character"
       assert result =~ "does not match password"
     end
   end
@@ -56,8 +54,8 @@ defmodule ExJiraWeb.UserResetPasswordLiveTest do
         lv
         |> form("#reset_password_form",
           user: %{
-            "password" => "new valid password",
-            "password_confirmation" => "new valid password"
+            "password" => "new va",
+            "password_confirmation" => "new va"
           }
         )
         |> render_submit()
@@ -65,7 +63,7 @@ defmodule ExJiraWeb.UserResetPasswordLiveTest do
 
       refute get_session(conn, :user_token)
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Password reset successfully"
-      assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
+      assert Accounts.get_user_by_email_and_password(user.email, "new va")
     end
 
     test "does not reset password on invalid data", %{conn: conn, token: token} do
@@ -75,14 +73,14 @@ defmodule ExJiraWeb.UserResetPasswordLiveTest do
         lv
         |> form("#reset_password_form",
           user: %{
-            "password" => "too short",
+            "password" => "to",
             "password_confirmation" => "does not match"
           }
         )
         |> render_submit()
 
       assert result =~ "Reset Password"
-      assert result =~ "should be at least 12 character(s)"
+      assert result =~ "should be at least 5 character(s)"
       assert result =~ "does not match password"
     end
   end

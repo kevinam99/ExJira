@@ -5,7 +5,7 @@ defmodule ExJira.AccountsFixtures do
   """
 
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
-  def valid_user_password, do: "hello world!"
+  def valid_user_password, do: "hell0123"
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
@@ -14,10 +14,14 @@ defmodule ExJira.AccountsFixtures do
     })
   end
 
+  @spec user_fixture(any()) :: any()
   def user_fixture(attrs \\ %{}) do
+    organisation = ExJira.OrganisationsFixtures.organisation_fixture()
+
     {:ok, user} =
       attrs
       |> valid_user_attributes()
+      |> Map.put_new(:organisation_id, organisation.id)
       |> ExJira.Accounts.register_user()
 
     user

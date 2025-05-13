@@ -15,6 +15,7 @@ defmodule ExJiraWeb.TaskLive.Index do
 
   @impl true
   def handle_params(params, _url, socket) do
+    Process.send_after(self(), :clear_flash, 3000)
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
@@ -61,6 +62,10 @@ defmodule ExJiraWeb.TaskLive.Index do
     {:noreply, stream_insert(socket, :tasks, task)}
   end
 
+  def handle_info(:clear_flash, socket) do
+    {:noreply, clear_flash(socket)}
+  end
+
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     %User{} = user = socket.assigns.current_user
@@ -73,6 +78,7 @@ defmodule ExJiraWeb.TaskLive.Index do
       true ->
         task = Tasks.get_task!(id)
         {:ok, _} = Tasks.delete_task(task)
+
         put_flash(socket, :info, "Task deleted successfully.")
         |> push_navigate(to: ~p"/tasks")
     end
