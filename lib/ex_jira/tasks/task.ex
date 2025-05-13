@@ -6,7 +6,7 @@ defmodule ExJira.Tasks.Task do
     field :status, :string
     field :description, :string
     field :title, :string
-    field :organisation_id, :id
+    belongs_to :organisation, ExJira.Organisations.Organisation, type: :string
 
     timestamps(type: :utc_datetime)
   end

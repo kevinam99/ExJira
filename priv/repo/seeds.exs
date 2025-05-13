@@ -26,42 +26,52 @@ defmodule Seeds do
 end
 
 # --- Create Organisations ---
-acme_org = Repo.insert!(%Organisation{name: "Acme Corp"})
-globex_org = Repo.insert!(%Organisation{name: "Globex Inc"})
+acme_org = Repo.insert!(%Organisation{name: "Acme Corp", id: "acme"})
+globex_org = Repo.insert!(%Organisation{name: "Globex Inc", id: "globex"})
 
 # --- Create Users ---
 
-acme_admin =
+bob =
   Seeds.create_user(%{
-    email: "admin@acme.com",
-    password: "password123",
-    organisation_id: acme_org.id,
-    role: "admin"
+    email: "bob@example.com",
+    password: "password123"
   })
 
-acme_manager =
+Repo.insert!(%ExJira.Accounts.AccessControl{
+  role: "admin",
+  user_id: bob.id,
+  organisation_id: acme_org.id
+})
+
+alice =
   Seeds.create_user(%{
-    email: "manager@acme.com",
-    password: "password123",
-    organisation_id: acme_org.id,
-    role: "manager"
+    email: "alice@example.com",
+    password: "password123"
   })
 
-acme_employee =
+Repo.insert!(%ExJira.Accounts.AccessControl{
+  role: "manager",
+  user_id: alice.id,
+  organisation_id: acme_org.id
+})
+
+stanley =
   Seeds.create_user(%{
-    email: "employee@acme.com",
-    password: "password123",
-    organisation_id: acme_org.id,
-    role: "employee"
+    email: "stanley@example.com",
+    password: "password123"
   })
 
-globex_admin =
-  Seeds.create_user(%{
-    email: "admin@globex.com",
-    password: "password123",
-    organisation_id: globex_org.id,
-    role: "admin"
-  })
+Repo.insert!(%ExJira.Accounts.AccessControl{
+  role: "employee",
+  user_id: stanley.id,
+  organisation_id: acme_org.id
+})
+
+Repo.insert!(%ExJira.Accounts.AccessControl{
+  role: "admin",
+  user_id: alice.id,
+  organisation_id: globex_org.id
+})
 
 # --- Create Tasks ---
 Repo.insert!(%Task{

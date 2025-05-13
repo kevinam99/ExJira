@@ -3,7 +3,7 @@ defmodule ExJira.Repo.Migrations.AddOrgToUser do
 
   def change do
     alter table(:users) do
-      add :organisation_id, references(:organisations)
+      add :organisation_id, references(:organisations, type: :string)
       add :role, :string
     end
 

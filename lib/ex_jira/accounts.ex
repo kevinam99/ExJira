@@ -350,4 +350,100 @@ defmodule ExJira.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  alias ExJira.Accounts.AccessControl
+
+  @doc """
+  Returns the list of access_controls.
+
+  ## Examples
+
+      iex> list_access_controls()
+      [%AccessControl{}, ...]
+
+  """
+  def list_access_controls do
+    Repo.all(AccessControl)
+  end
+
+  @doc """
+  Gets a single access_control.
+
+  Raises `Ecto.NoResultsError` if the Access control does not exist.
+
+  ## Examples
+
+      iex> get_access_control!(123)
+      %AccessControl{}
+
+      iex> get_access_control!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_access_control!(id), do: Repo.get!(AccessControl, id)
+
+  @doc """
+  Creates a access_control.
+
+  ## Examples
+
+      iex> create_access_control(%{field: value})
+      {:ok, %AccessControl{}}
+
+      iex> create_access_control(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_access_control(attrs \\ %{}) do
+    %AccessControl{}
+    |> AccessControl.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a access_control.
+
+  ## Examples
+
+      iex> update_access_control(access_control, %{field: new_value})
+      {:ok, %AccessControl{}}
+
+      iex> update_access_control(access_control, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_access_control(%AccessControl{} = access_control, attrs) do
+    access_control
+    |> AccessControl.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a access_control.
+
+  ## Examples
+
+      iex> delete_access_control(access_control)
+      {:ok, %AccessControl{}}
+
+      iex> delete_access_control(access_control)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_access_control(%AccessControl{} = access_control) do
+    Repo.delete(access_control)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking access_control changes.
+
+  ## Examples
+
+      iex> change_access_control(access_control)
+      %Ecto.Changeset{data: %AccessControl{}}
+
+  """
+  def change_access_control(%AccessControl{} = access_control, attrs \\ %{}) do
+    AccessControl.changeset(access_control, attrs)
+  end
 end

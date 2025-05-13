@@ -32,4 +32,18 @@ defmodule ExJira.AccountsFixtures do
     [_, token | _] = String.split(captured_email.text_body, "[TOKEN]")
     token
   end
+
+  @doc """
+  Generate a access_control.
+  """
+  def access_control_fixture(attrs \\ %{}) do
+    {:ok, access_control} =
+      attrs
+      |> Enum.into(%{
+        role: "some role"
+      })
+      |> ExJira.Accounts.create_access_control()
+
+    access_control
+  end
 end

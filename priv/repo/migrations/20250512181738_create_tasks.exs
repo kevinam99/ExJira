@@ -6,7 +6,7 @@ defmodule ExJira.Repo.Migrations.CreateTasks do
       add :title, :string
       add :description, :text
       add :status, :string
-      add :organisation_id, references(:organisations, on_delete: :nothing)
+      add :organisation_id, references(:organisations, type: :string, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
     end

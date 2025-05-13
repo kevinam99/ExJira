@@ -505,4 +505,65 @@ defmodule ExJira.AccountsTest do
       refute inspect(%User{password: "53456"}) =~ "password: \"53456\""
     end
   end
+
+  describe "access_controls" do
+    alias ExJira.Accounts.AccessControl
+
+    import ExJira.AccountsFixtures
+
+    @invalid_attrs %{role: nil}
+
+    test "list_access_controls/0 returns all access_controls" do
+      access_control = access_control_fixture()
+      assert Accounts.list_access_controls() == [access_control]
+    end
+
+    test "get_access_control!/1 returns the access_control with given id" do
+      access_control = access_control_fixture()
+      assert Accounts.get_access_control!(access_control.id) == access_control
+    end
+
+    test "create_access_control/1 with valid data creates a access_control" do
+      valid_attrs = %{role: "some role"}
+
+      assert {:ok, %AccessControl{} = access_control} =
+               Accounts.create_access_control(valid_attrs)
+
+      assert access_control.role == "some role"
+    end
+
+    test "create_access_control/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_access_control(@invalid_attrs)
+    end
+
+    test "update_access_control/2 with valid data updates the access_control" do
+      access_control = access_control_fixture()
+      update_attrs = %{role: "some updated role"}
+
+      assert {:ok, %AccessControl{} = access_control} =
+               Accounts.update_access_control(access_control, update_attrs)
+
+      assert access_control.role == "some updated role"
+    end
+
+    test "update_access_control/2 with invalid data returns error changeset" do
+      access_control = access_control_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.update_access_control(access_control, @invalid_attrs)
+
+      assert access_control == Accounts.get_access_control!(access_control.id)
+    end
+
+    test "delete_access_control/1 deletes the access_control" do
+      access_control = access_control_fixture()
+      assert {:ok, %AccessControl{}} = Accounts.delete_access_control(access_control)
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_access_control!(access_control.id) end
+    end
+
+    test "change_access_control/1 returns a access_control changeset" do
+      access_control = access_control_fixture()
+      assert %Ecto.Changeset{} = Accounts.change_access_control(access_control)
+    end
+  end
 end

@@ -8,8 +8,7 @@ defmodule ExJira.Accounts.User do
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
-    field :role, :string
-    belongs_to :organisation, ExJira.Organisations.Organisation
+    many_to_many :access_controls, ExJira.Accounts.AccessControl, join_through: "access_controls"
 
     timestamps(type: :utc_datetime)
   end
@@ -39,7 +38,7 @@ defmodule ExJira.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :organisation_id, :role])
+    |> cast(attrs, [:email, :password])
     |> validate_email(opts)
     |> validate_password(opts)
   end
