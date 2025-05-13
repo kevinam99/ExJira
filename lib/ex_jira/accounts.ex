@@ -382,6 +382,8 @@ defmodule ExJira.Accounts do
   """
   def get_access_control!(id), do: Repo.get!(AccessControl, id)
 
+  def get_access_control_by(params), do: Repo.get_by(AccessControl, params)
+
   @doc """
   Creates a access_control.
 

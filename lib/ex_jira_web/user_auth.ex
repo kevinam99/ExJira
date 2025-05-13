@@ -31,6 +31,7 @@ defmodule ExJiraWeb.UserAuth do
 
     conn
     |> renew_session()
+    |> put_session(:organisation_id, params["organisation_id"])
     |> put_token_in_session(token)
     |> maybe_write_remember_me_cookie(token, params)
     |> redirect(to: user_return_to || signed_in_path(conn))

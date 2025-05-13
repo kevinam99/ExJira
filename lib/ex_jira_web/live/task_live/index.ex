@@ -7,10 +7,21 @@ defmodule ExJiraWeb.TaskLive.Index do
   alias ExJira.Tasks.Task
 
   @impl true
-  def mount(_params, _session, socket) do
-    user = socket.assigns.current_user
+  def mount(_params, %{"access_control_id" => access_control_id} = session, socket) do
+    current_user = socket.assigns.current_user
 
-    {:ok, stream(socket, :tasks, Tasks.list_tasks_for_organisation(user.organisation_id))}
+    %ExJira.Accounts.AccessControl{} =
+      access_control =
+      ExJira.Accounts.get_access_control_by(%{
+        user_id: current_user.id,
+        id: access_control_id,
+        organisation_id: session["organisation_id"]
+      })
+
+    socket
+    |> assign(:access_control, access_control)
+    |> stream(:tasks, Tasks.list_tasks_for_organisation(access_control.organisation_id))
+    |> ok()
   end
 
   @impl true
@@ -22,7 +33,7 @@ defmodule ExJiraWeb.TaskLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     %User{} = user = socket.assigns.current_user
 
-    case Permissions.can?(user, :update) do
+    case Permissions.can?(socket.assigns.access_control, user, :update) do
       false ->
         socket
         |> put_flash(:error, "You are not authorized to edit this task.")
@@ -38,7 +49,7 @@ defmodule ExJiraWeb.TaskLive.Index do
   defp apply_action(socket, :new, _params) do
     %User{} = user = socket.assigns.current_user
 
-    case Permissions.can?(user, :create) do
+    case Permissions.can?(socket.assigns.access_control, user, :create) do
       false ->
         socket
         |> put_flash(:error, "You are not authorized to create a task.")
@@ -47,7 +58,7 @@ defmodule ExJiraWeb.TaskLive.Index do
       true ->
         socket
         |> assign(:page_title, "New Task")
-        |> assign(:task, %Task{organisation_id: user.organisation_id})
+        |> assign(:task, %Task{organisation_id: socket.assigns.access_control.organisation_id})
     end
   end
 
@@ -70,7 +81,7 @@ defmodule ExJiraWeb.TaskLive.Index do
   def handle_event("delete", %{"id" => id}, socket) do
     %User{} = user = socket.assigns.current_user
 
-    case Permissions.can?(user, :delete) do
+    case Permissions.can?(socket.assigns.access_control, user, :delete) do
       false ->
         socket
         |> put_flash(:error, "You are not authorized to delete this task.")
