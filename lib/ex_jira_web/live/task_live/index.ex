@@ -7,6 +7,7 @@ defmodule ExJiraWeb.TaskLive.Index do
   alias ExJira.Tasks.Task
 
   @impl true
+  @spec mount(any(), map(), map()) :: {:ok, any()}
   def mount(_params, %{"access_control_id" => access_control_id} = session, socket) do
     current_user = socket.assigns.current_user
 

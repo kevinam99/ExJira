@@ -13,10 +13,6 @@ defmodule ExJiraWeb.Router do
     plug :fetch_current_user
   end
 
-  pipeline :set_access_control do
-    plug ExJiraWeb.Plugs.SetAccessControl
-  end
-
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -66,7 +62,7 @@ defmodule ExJiraWeb.Router do
   end
 
   scope "/", ExJiraWeb do
-    pipe_through [:browser, :require_authenticated_user, :set_access_control]
+    pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
       on_mount: [{ExJiraWeb.UserAuth, :ensure_authenticated}] do

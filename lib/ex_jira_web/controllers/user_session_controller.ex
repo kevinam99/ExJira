@@ -23,11 +23,11 @@ defmodule ExJiraWeb.UserSessionController do
 
     with %ExJira.Accounts.User{} = user <-
            Accounts.get_user_by_email_and_password(email, password),
-         %ExJira.Accounts.AccessControl{} <-
+         %ExJira.Accounts.AccessControl{id: access_control_id} <-
            Accounts.get_access_control_by(%{user_id: user.id, organisation_id: org_id}) do
       conn
       |> put_flash(:info, info)
-      |> UserAuth.log_in_user(user, user_params)
+      |> UserAuth.log_in_user(user, Map.put(user_params, "access_control_id", access_control_id))
     else
       nil ->
         # In order to prevent user enumeration attacks, don't disclose whether the email is registered.
